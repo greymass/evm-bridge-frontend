@@ -706,9 +706,9 @@ export default {
 
         var hash = blockinfo.mixHash.slice(2)
 
-        // Fetch EOS block, we do not use the function provided by the package as it miss fields in the return value.
+        // Fetch Vaulta block, we do not use the function provided by the package as it miss fields in the return value.
         var r = await vm.rpc.fetch('/v1/chain/get_block', { block_num_or_id: hash })
-        // EOS tx id is the result.transactions.trx.id
+        // Vaulta tx id is the result.transactions.trx.id
         // EVM tx is in eos_block.transactions.trx.transaction.actions[n]
         // There should be only one action in each eos transaction for those EVM transactions.
         // We can filter the action by action.account === 'eosio.evm' and locate the rlptx of the EVM tx in action.data.rlptx
@@ -722,9 +722,9 @@ export default {
           (e) => e.account === 'eosio.evm' && e.data && e.data.rlptx && Web3.utils.keccak256("0x" + e.data.rlptx) === vm.transactionHash
         )
 
-        // One EVM block will cover one second of time. So there will be two EOS blocks.
+        // One EVM block will cover one second of time. So there will be two Vaulta blocks.
         // If we cannot find the tx in the block located by the mixHash, try the previous one.
-        // It's in theory possible to have more than or less than two EOS blocks related to one EVM block,
+        // It's in theory possible to have more than or less than two Vaulta blocks related to one EVM block,
         // but for the frontend display, hardcoded two queries should be fine. 
         // We can make the logic more general and more robust if necessary.
         if (txs.length == 0) {
