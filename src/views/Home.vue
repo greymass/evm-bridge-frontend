@@ -108,8 +108,8 @@
           </div>
 
           <div class="mt-2 text-center small text-white">
-            <span v-if="tokenName() != 'EOS'">
-              {{ $t('home.bridgeFee') }} {{ egressFeeInEOS() }} EOS
+            <span v-if="tokenName() != 'A'">
+              {{ $t('home.bridgeFee') }} {{ egressFeeInEOS() }} A
             </span>
             <br>
             {{ $t('home.transferTime', ['~5 s']) }}
@@ -271,18 +271,18 @@ export default {
       finished: false,
       transactionError: '',
       extraWarning: '',
-      tokenList: [{ name: 'EOS', addr: '', logo: 'images/eos.png', ingressFee: 0}],
+      tokenList: [{ name: 'A', addr: '', logo: 'images/a.png', ingressFee: 0}],
       selectedToken: 0,
       egressFee: '0',
       decimals: null,
       tokenListTestnet: [
-        { name: 'EOS', addr: '', logo: 'images/eos.png', ingressFee: 0},
+        { name: 'A', addr: '', logo: 'images/a.png', ingressFee: 0},
         { name: 'JUNGLE', addr: '0x4ea3b729669bF6C34F7B80E5D6c17DB71F89F21F', logo: 'images/jungle.png', erc20_contract: null, ingressFee: 0 },
       ],
       tokenListMainnet: [
         {
-          name: 'EOS', addr: '', logo: 'images/eos.png',
-          blockList: ['eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos'],
+          name: 'A', addr: '', logo: 'images/a.png',
+          blockList: ['eosbndeposit', 'bybitdeposit', 'bitgeteosdep', 'kucoindoteos', 'binancecleos', 'coinbasebase'],
           warningList: ['huobideposit', 'okbtothemoon', 'gateiowallet', 'coinbasebase', 'krakenkraken'],
           ingressFee: 0
         },
@@ -477,7 +477,7 @@ export default {
 
       for (let index = 0; index < tokenList.length; index++) {
         let e = tokenList[index]
-        if (e.name === "EOS") {
+        if (e.name === "A") {
           const r = await this.rpc.fetch('/v1/chain/get_table_rows', { "table": "config", "scope": "eosio.evm", "code": "eosio.evm", "json": true })
           e.ingressFee = Number(r.rows[0].ingress_bridge_fee.split(' ')[0])
           e.enabled = true
@@ -605,7 +605,7 @@ export default {
       if (!address) {
         return
       }
-      if (this.tokenName() === 'EOS') {
+      if (this.tokenName() === 'A') {
         const bal = await fetchBalance({
           address,
           formatUnits: 'wei',
@@ -675,7 +675,7 @@ export default {
 
         await this.getPrice()
 
-        if (this.tokenName() === 'EOS') {
+        if (this.tokenName() === 'A') {
           tx = await sendTransaction({
             from: this.address,
             to: this.addressEvm,
@@ -706,9 +706,9 @@ export default {
 
         var hash = blockinfo.mixHash.slice(2)
 
-        // Fetch EOS block, we do not use the function provided by the package as it miss fields in the return value.
+        // Fetch Vaulta block, we do not use the function provided by the package as it miss fields in the return value.
         var r = await vm.rpc.fetch('/v1/chain/get_block', { block_num_or_id: hash })
-        // EOS tx id is the result.transactions.trx.id
+        // Vaulta tx id is the result.transactions.trx.id
         // EVM tx is in eos_block.transactions.trx.transaction.actions[n]
         // There should be only one action in each eos transaction for those EVM transactions.
         // We can filter the action by action.account === 'eosio.evm' and locate the rlptx of the EVM tx in action.data.rlptx
@@ -722,9 +722,9 @@ export default {
           (e) => e.account === 'eosio.evm' && e.data && e.data.rlptx && Web3.utils.keccak256("0x" + e.data.rlptx) === vm.transactionHash
         )
 
-        // One EVM block will cover one second of time. So there will be two EOS blocks.
+        // One EVM block will cover one second of time. So there will be two Vaulta blocks.
         // If we cannot find the tx in the block located by the mixHash, try the previous one.
-        // It's in theory possible to have more than or less than two EOS blocks related to one EVM block,
+        // It's in theory possible to have more than or less than two Vaulta blocks related to one EVM block,
         // but for the frontend display, hardcoded two queries should be fine. 
         // We can make the logic more general and more robust if necessary.
         if (txs.length == 0) {

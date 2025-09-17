@@ -1,6 +1,6 @@
 # evm-bridge-frontend
 
-The frontend of the trustless bridge of the EOS EVM. 
+The frontend of the trustless bridge of the Vaulta EVM. 
 
 ## Project Setup
 

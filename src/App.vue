@@ -31,10 +31,10 @@ const selectLang = (val) => {
   const chains = [env === 'MAINNET' ? eos : eosTestnet]
   const wagmiConfig = defaultWagmiConfig({ chains, projectId, appName: 'Web3Modal' ,
   metadata: {
-    name: 'EOS EVM',
-    description: 'EOS EVM',
-    url: 'https://eosnetwork.com',
-    icons: ['https://bridge.evm.eosnetwork.com/images/eos.png']
+    name: 'Vaulta EVM',
+    description: 'Vaulta EVM',
+    url: 'https://vaulta.com',
+    icons: ['https://bridge.evm.eosnetwork.com/images/a.png']
   },
   rpcUrl: env === 'MAINNET' ? 'https://api.evm.eosnetwork.com' : 'https://api.testnet.evm.eosnetwork.com',
 })
@@ -42,8 +42,8 @@ const selectLang = (val) => {
   // 3. Create modal
   createWeb3Modal({ wagmiConfig, projectId, chains ,
     chainImages: {
-    15557: '/images/eos.png',
-    17777: '/images/eos.png',
+    15557: '/images/a.png',
+    17777: '/images/a.png',
   },
   themeMode: 'light',
     themeVariables: {
@@ -67,8 +67,8 @@ const selectLang = (val) => {
     <div class="container">
       <b-navbar dark toggleable="sm">
         <a class="navbar-brand" href="">
-          <img v-if="env === 'TESTNET'" src="./assets/eos_evm_testnet_logo.svg" alt="" style="filter:invert(1); height: 45px;">
-          <img v-else src="./assets/eos_evm_logo.svg" alt="" style="filter:invert(1); height: 45px;">
+          <img v-if="env === 'TESTNET'" src="./assets/vaulta_logo.svg" alt="" style="height: 45px;">
+          <img v-else src="./assets/vaulta_logo.svg" alt="" style=" height: 45px;">
         </a>
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown class="me-3" no-caret strategy="fixed" toggle-class="locale" >
@@ -98,8 +98,8 @@ const selectLang = (val) => {
     <div class="container">
       <b-row class="mb-4">
         <b-col sm="7" class="text-center text-sm-start">
-          <img v-if="env === 'TESTNET'" class="mb-3" src="./assets/eos_evm_testnet_logo.svg" alt="" style="filter:invert(1); height: 45px;">
-          <img v-else class="mb-3" src="./assets/eos_evm_logo.svg" alt="" style="filter:invert(1); height: 45px;">
+          <img v-if="env === 'TESTNET'" class="mb-3" src="./assets/vaulta_logo.svg" alt="" style=" height: 45px;">
+          <img v-else class="mb-3" src="./assets/vaulta_logo.svg" alt="" style=" height: 45px;">
         </b-col>
         <b-col sm="2" class="text-left" style="position: relative">
 
