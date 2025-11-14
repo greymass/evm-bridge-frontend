@@ -1,5 +1,5 @@
 <script setup>
-import { provide, reactive, ref, inject, watch } from 'vue'
+import { ref, inject, watch } from 'vue'
 import { RouterView } from 'vue-router'
 import { createWeb3Modal, defaultWagmiConfig, useWeb3Modal, useWeb3ModalEvents } from '@web3modal/wagmi/vue'
 import { eos, eosTestnet } from 'viem/chains'
@@ -9,9 +9,17 @@ import { eos, eosTestnet } from 'viem/chains'
 const env = inject('env')
 const i18n = inject('i18n')
 
+const getNetworkUrl = (isTestnet) => {
+  const isCloudflare = location.host.includes('pages.dev')
+  if (isCloudflare) {
+    return isTestnet ? '/?testnet' : '/'
+  }
+  return isTestnet ? 'https://bridge.testnet.evm.eosnetwork.com' : 'https://bridge.evm.eosnetwork.com'
+}
+
 const networks = {
-  "Testnet": 'https://bridge.testnet.evm.eosnetwork.com',
-  "Mainnet": 'https://bridge.evm.eosnetwork.com'
+  "Testnet": getNetworkUrl(true),
+  "Mainnet": getNetworkUrl(false)
 }
 const lang = ref(i18n.global.locale.value || 'en')
 const langs = {
