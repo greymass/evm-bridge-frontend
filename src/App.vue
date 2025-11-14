@@ -32,19 +32,28 @@ const selectLang = (val) => {
   i18n.global.locale.value = val
   localStorage.locale = val
 }
-  // 1. Get projectId
-  const projectId = '12d2503c58f46ada41000bde1e0d0b7a'
+
+// Environment variables with defaults
+const projectId = import.meta.env.VITE_WEB3_PROJECT_ID || '12d2503c58f46ada41000bde1e0d0b7a'
+const rpcUrlMainnet = import.meta.env.VITE_RPC_URL_MAINNET || 'https://api.evm.eosnetwork.com'
+const rpcUrlTestnet = import.meta.env.VITE_RPC_URL_TESTNET || 'https://api.testnet.evm.eosnetwork.com'
+const appName = import.meta.env.VITE_APP_NAME || 'Vaulta EVM'
+const appDescription = import.meta.env.VITE_APP_DESCRIPTION || 'Vaulta EVM'
+const appUrl = import.meta.env.VITE_APP_URL || 'https://vaulta.com'
+const appIcon = import.meta.env.VITE_APP_ICON || 'https://bridge.evm.eosnetwork.com/images/a.png'
+
+  // 1. Get projectId (already set above)
 
   // 2. Create wagmiConfig
   const chains = [env === 'MAINNET' ? eos : eosTestnet]
-  const wagmiConfig = defaultWagmiConfig({ chains, projectId, appName: 'Web3Modal' ,
+  const wagmiConfig = defaultWagmiConfig({ chains, projectId, appName,
   metadata: {
-    name: 'Vaulta EVM',
-    description: 'Vaulta EVM',
-    url: 'https://vaulta.com',
-    icons: ['https://bridge.evm.eosnetwork.com/images/a.png']
+    name: appName,
+    description: appDescription,
+    url: appUrl,
+    icons: [appIcon]
   },
-  rpcUrl: env === 'MAINNET' ? 'https://api.evm.eosnetwork.com' : 'https://api.testnet.evm.eosnetwork.com',
+  rpcUrl: env === 'MAINNET' ? rpcUrlMainnet : rpcUrlTestnet,
 })
 
   // 3. Create modal
