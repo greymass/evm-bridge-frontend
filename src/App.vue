@@ -89,7 +89,7 @@ const appIcon = import.meta.env.VITE_APP_ICON || 'https://bridge.evm.eosnetwork.
         </a>
         <b-navbar-nav class="ml-auto">
           <div class="me-3" style="color: white; padding: 0.5rem 1rem; align-self: center;">
-            Mainnet
+            {{ env === 'TESTNET' ? 'Testnet' : 'Mainnet' }}
           </div>
           <b-nav-item-dropdown class="me-3" no-caret strategy="fixed" toggle-class="locale">
             <template #button-content>
