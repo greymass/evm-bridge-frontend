@@ -9,18 +9,6 @@ import { eos, eosTestnet } from 'viem/chains'
 const env = inject('env')
 const i18n = inject('i18n')
 
-const getNetworkUrl = (isTestnet) => {
-  const isCloudflare = location.host.includes('pages.dev')
-  if (isCloudflare) {
-    return isTestnet ? '/?testnet' : '/'
-  }
-  return isTestnet ? 'https://bridge.testnet.evm.eosnetwork.com' : 'https://bridge.evm.eosnetwork.com'
-}
-
-const networks = {
-  "Testnet": getNetworkUrl(true),
-  "Mainnet": getNetworkUrl(false)
-}
 const lang = ref(i18n.global.locale.value || 'en')
 const langs = {
   en: 'English',
@@ -34,7 +22,6 @@ const selectLang = (val) => {
 }
 
 // Environment variables with defaults
-const projectId = import.meta.env.VITE_WEB3_PROJECT_ID || '12d2503c58f46ada41000bde1e0d0b7a'
 const rpcUrlMainnet = import.meta.env.VITE_RPC_URL_MAINNET || 'https://api.evm.eosnetwork.com'
 const rpcUrlTestnet = import.meta.env.VITE_RPC_URL_TESTNET || 'https://api.testnet.evm.eosnetwork.com'
 const appName = import.meta.env.VITE_APP_NAME || 'Vaulta EVM'
@@ -42,11 +29,13 @@ const appDescription = import.meta.env.VITE_APP_DESCRIPTION || 'Vaulta EVM'
 const appUrl = import.meta.env.VITE_APP_URL || 'https://vaulta.com'
 const appIcon = import.meta.env.VITE_APP_ICON || 'https://bridge.evm.eosnetwork.com/images/a.png'
 
-  // 1. Get projectId (already set above)
+ // 1. Get projectId (already set above)
+const projectId = import.meta.env.VITE_WEB3_PROJECT_ID || '12d2503c58f46ada41000bde1e0d0b7a'
 
-  // 2. Create wagmiConfig
-  const chains = [env === 'MAINNET' ? eos : eosTestnet]
-  const wagmiConfig = defaultWagmiConfig({ chains, projectId, appName,
+
+// 2. Create wagmiConfig
+const chains = [env === 'MAINNET' ? eos : eosTestnet]
+const wagmiConfig = defaultWagmiConfig({ chains, projectId, appName,
   metadata: {
     name: appName,
     description: appDescription,
@@ -57,8 +46,11 @@ const appIcon = import.meta.env.VITE_APP_ICON || 'https://bridge.evm.eosnetwork.
 })
 
   // 3. Create modal
-  createWeb3Modal({ wagmiConfig, projectId, chains ,
-    chainImages: {
+createWeb3Modal({
+  wagmiConfig,
+  projectId,
+  chains,
+  chainImages: {
     15557: '/images/a.png',
     17777: '/images/a.png',
   },
@@ -71,10 +63,8 @@ const appIcon = import.meta.env.VITE_APP_ICON || 'https://bridge.evm.eosnetwork.
     //'--w3m-font-size-master':,
     '--w3m-border-radius-master':'1px',
     //'--w3m-z-index':,
-
   }
 })
-
   
 </script>
 
