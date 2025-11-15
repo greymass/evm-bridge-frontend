@@ -3,6 +3,7 @@ import { ref, inject, watch } from 'vue'
 import { RouterView } from 'vue-router'
 import { createWeb3Modal, defaultWagmiConfig, useWeb3Modal, useWeb3ModalEvents } from '@web3modal/wagmi/vue'
 import { eos, eosTestnet } from 'viem/chains'
+import { defineChain } from 'viem'
 
 
 
@@ -24,7 +25,14 @@ const selectLang = (val) => {
 // Environment variables with defaults
 const rpcUrlMainnet = import.meta.env.VITE_RPC_URL_MAINNET || 'https://api.evm.eosnetwork.com'
 const rpcUrlTestnet = import.meta.env.VITE_RPC_URL_TESTNET || 'https://api.testnet.evm.eosnetwork.com'
-console.info('🔌 Resolved RPC URLs', { rpcUrlMainnet, rpcUrlTestnet })
+const withCustomRpc = (chain, rpcUrl) => defineChain({
+  ...chain,
+  rpcUrls: {
+    ...chain.rpcUrls,
+    default: { http: [rpcUrl] },
+    public: { http: [rpcUrl] }
+  }
+})
 const appName = import.meta.env.VITE_APP_NAME || 'Vaulta EVM'
 const appDescription = import.meta.env.VITE_APP_DESCRIPTION || 'Vaulta EVM'
 const appUrl = import.meta.env.VITE_APP_URL || 'https://vaulta.com'
@@ -35,7 +43,10 @@ const projectId = import.meta.env.VITE_WEB3_PROJECT_ID || '12d2503c58f46ada41000
 
 
 // 2. Create wagmiConfig
-const chains = [env === 'MAINNET' ? eos : eosTestnet]
+const chain = env === 'MAINNET'
+  ? withCustomRpc(eos, rpcUrlMainnet)
+  : withCustomRpc(eosTestnet, rpcUrlTestnet)
+const chains = [chain]
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, appName,
   metadata: {
     name: appName,
