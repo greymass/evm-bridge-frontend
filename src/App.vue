@@ -1,5 +1,5 @@
 <script setup>
-import { provide, reactive, ref, inject, watch } from 'vue'
+import { ref, inject, watch } from 'vue'
 import { RouterView } from 'vue-router'
 import { createWeb3Modal, defaultWagmiConfig, useWeb3Modal, useWeb3ModalEvents } from '@web3modal/wagmi/vue'
 import { eos, eosTestnet } from 'viem/chains'
@@ -9,10 +9,6 @@ import { eos, eosTestnet } from 'viem/chains'
 const env = inject('env')
 const i18n = inject('i18n')
 
-const networks = {
-  "Testnet": 'https://bridge.testnet.evm.eosnetwork.com',
-  "Mainnet": 'https://bridge.evm.eosnetwork.com'
-}
 const lang = ref(i18n.global.locale.value || 'en')
 const langs = {
   en: 'English',
@@ -24,24 +20,37 @@ const selectLang = (val) => {
   i18n.global.locale.value = val
   localStorage.locale = val
 }
-  // 1. Get projectId
-  const projectId = '12d2503c58f46ada41000bde1e0d0b7a'
 
-  // 2. Create wagmiConfig
-  const chains = [env === 'MAINNET' ? eos : eosTestnet]
-  const wagmiConfig = defaultWagmiConfig({ chains, projectId, appName: 'Web3Modal' ,
+// Environment variables with defaults
+const rpcUrlMainnet = import.meta.env.VITE_RPC_URL_MAINNET || 'https://api.evm.eosnetwork.com'
+const rpcUrlTestnet = import.meta.env.VITE_RPC_URL_TESTNET || 'https://api.testnet.evm.eosnetwork.com'
+const appName = import.meta.env.VITE_APP_NAME || 'Vaulta EVM'
+const appDescription = import.meta.env.VITE_APP_DESCRIPTION || 'Vaulta EVM'
+const appUrl = import.meta.env.VITE_APP_URL || 'https://vaulta.com'
+const appIcon = import.meta.env.VITE_APP_ICON || 'https://bridge.evm.eosnetwork.com/images/a.png'
+
+ // 1. Get projectId (already set above)
+const projectId = import.meta.env.VITE_WEB3_PROJECT_ID || '12d2503c58f46ada41000bde1e0d0b7a'
+
+
+// 2. Create wagmiConfig
+const chains = [env === 'MAINNET' ? eos : eosTestnet]
+const wagmiConfig = defaultWagmiConfig({ chains, projectId, appName,
   metadata: {
-    name: 'Vaulta EVM',
-    description: 'Vaulta EVM',
-    url: 'https://vaulta.com',
-    icons: ['https://bridge.evm.eosnetwork.com/images/a.png']
+    name: appName,
+    description: appDescription,
+    url: appUrl,
+    icons: [appIcon]
   },
-  rpcUrl: env === 'MAINNET' ? 'https://api.evm.eosnetwork.com' : 'https://api.testnet.evm.eosnetwork.com',
+  rpcUrl: env === 'MAINNET' ? rpcUrlMainnet : rpcUrlTestnet,
 })
 
   // 3. Create modal
-  createWeb3Modal({ wagmiConfig, projectId, chains ,
-    chainImages: {
+createWeb3Modal({
+  wagmiConfig,
+  projectId,
+  chains,
+  chainImages: {
     15557: '/images/a.png',
     17777: '/images/a.png',
   },
@@ -54,10 +63,8 @@ const selectLang = (val) => {
     //'--w3m-font-size-master':,
     '--w3m-border-radius-master':'1px',
     //'--w3m-z-index':,
-
   }
 })
-
   
 </script>
 
@@ -71,12 +78,9 @@ const selectLang = (val) => {
           <img v-else src="./assets/vaulta_logo.svg" alt="" style=" height: 45px;">
         </a>
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown class="me-3" no-caret strategy="fixed" toggle-class="locale" >
-            <template #button-content>
-              {{env === 'TESTNET'?'Testnet':'Mainnet'}}
-            </template>
-            <b-dropdown-item :href="v" v-for="(v, k) in networks" :key="k">{{ k }}</b-dropdown-item>
-          </b-nav-item-dropdown>
+          <div class="me-3" style="color: white; padding: 0.5rem 1rem; align-self: center;">
+            {{ env === 'TESTNET' ? 'Testnet' : 'Mainnet' }}
+          </div>
           <b-nav-item-dropdown class="me-3" no-caret strategy="fixed" toggle-class="locale">
             <template #button-content>
               <fa icon="language"/>

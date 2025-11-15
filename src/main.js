@@ -26,7 +26,9 @@ app.provide('wallet', wallet)
 
 
 app.component('Fa', Fa)
-app.provide('env', location.search === '?forceMainnet' ? 'MAINNET' : location.host === 'bridge.evm.eosnetwork.com' ? 'MAINNET' : 'TESTNET')
+const env = new URLSearchParams(location.search).has('testnet') || location.host === 'bridge.testnet.evm.eosnetwork.com' ? 'TESTNET' : 'MAINNET'
+console.log(`🌐 Environment: ${env}`)
+app.provide('env', env)
 app.provide('i18n', i18n)
 
 app.mount('#app')

@@ -140,7 +140,7 @@
           <div class="error" v-if="transactionError">{{ transactionError }}</div>
         </div>
       </b-tab>
-      <b-tab :title="$t('home.deposit')">
+      <b-tab v-if="false" :title="$t('home.deposit')">
         <b-card>
           <b-row align-v="center">
             <b-col class="text-center text-sm-start" sm="auto" style="min-width: 4em;">
@@ -368,8 +368,9 @@ export default {
     }
   },
   async created() {
-
-    this.rpc = (this.env === "TESTNET" ? new JsonRpc('https://jungle4.api.eosnation.io:443', { fetch }) : new JsonRpc('https://eos.api.eosnation.io:443', { fetch }));
+    const eosRpcMainnet = import.meta.env.VITE_EOS_RPC_MAINNET || 'https://eos.api.eosnation.io:443'
+    const eosRpcTestnet = import.meta.env.VITE_EOS_RPC_TESTNET || 'https://jungle4.api.eosnation.io:443'
+    this.rpc = (this.env === "TESTNET" ? new JsonRpc(eosRpcTestnet, { fetch }) : new JsonRpc(eosRpcMainnet, { fetch }));
     // this.wallet.connect = this.connectWallet
 
     this.tokenList = await this.prepareList(this.env === "TESTNET" ? this.tokenListTestnet : this.tokenListMainnet);
