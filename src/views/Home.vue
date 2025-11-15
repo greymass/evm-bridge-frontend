@@ -140,7 +140,7 @@
           <div class="error" v-if="transactionError">{{ transactionError }}</div>
         </div>
       </b-tab>
-      <b-tab :title="$t('home.deposit')">
+      <b-tab v-if="false" :title="$t('home.deposit')">
         <b-card>
           <b-row align-v="center">
             <b-col class="text-center text-sm-start" sm="auto" style="min-width: 4em;">

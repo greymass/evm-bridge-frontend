@@ -88,12 +88,9 @@ const appIcon = import.meta.env.VITE_APP_ICON || 'https://bridge.evm.eosnetwork.
           <img v-else src="./assets/vaulta_logo.svg" alt="" style=" height: 45px;">
         </a>
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown class="me-3" no-caret strategy="fixed" toggle-class="locale" >
-            <template #button-content>
-              {{env === 'TESTNET'?'Testnet':'Mainnet'}}
-            </template>
-            <b-dropdown-item :href="v" v-for="(v, k) in networks" :key="k">{{ k }}</b-dropdown-item>
-          </b-nav-item-dropdown>
+          <div class="me-3" style="color: white; padding: 0.5rem 1rem; align-self: center;">
+            Mainnet
+          </div>
           <b-nav-item-dropdown class="me-3" no-caret strategy="fixed" toggle-class="locale">
             <template #button-content>
               <fa icon="language"/>
