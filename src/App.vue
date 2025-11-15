@@ -24,6 +24,7 @@ const selectLang = (val) => {
 // Environment variables with defaults
 const rpcUrlMainnet = import.meta.env.VITE_RPC_URL_MAINNET || 'https://api.evm.eosnetwork.com'
 const rpcUrlTestnet = import.meta.env.VITE_RPC_URL_TESTNET || 'https://api.testnet.evm.eosnetwork.com'
+console.info('🔌 Resolved RPC URLs', { rpcUrlMainnet, rpcUrlTestnet })
 const appName = import.meta.env.VITE_APP_NAME || 'Vaulta EVM'
 const appDescription = import.meta.env.VITE_APP_DESCRIPTION || 'Vaulta EVM'
 const appUrl = import.meta.env.VITE_APP_URL || 'https://vaulta.com'
